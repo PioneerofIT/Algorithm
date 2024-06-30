@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL); // Compile 시간 단축을 위한 코드 C와 동기화 및 자동 플러쉬 비활성화 --> 속도 Up
+    
+    int N; // 입력 값 Ex.15
+    cin >> N;
+    int count = 1; // N과 SUM이  같은 경우  N=15일 때 SUM이 수들의 합이 아닌 Just 15일 경우
+    int start_index = 1;
+    int end_index = 1;
+    int sum = 1;
+    
+    while(end_index != N)
+    {
+        if(sum == N) // Sum과 N이 같을 때 Count 증가 후 end_index 확장
+        {
+            count ++;
+            end_index++;
+            sum += end_index;
+        }
+        else if (sum > N) // Sum이 클 경우 start_index를 축소 즉 왼쪽 값 범위 제거
+        {
+            sum -= start_index;
+            start_index++;
+        }
+        else if( sum < N) //N 이 클 경우 end_index를 오른쪽으로 이동 시켜 값 확장
+        {
+            end_index++;
+            sum += end_index;
+        }
+    }
+     cout << count<<"\n" ;    
+}
