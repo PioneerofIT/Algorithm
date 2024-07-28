@@ -1,0 +1,108 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int nCheckArr[4]; // 입력받는 문자 조건 count
+int nMyArr[4]; // P 문자열에서 만족하는 문자 count {A, C, G, T}
+int nCheckCount = 0; // 만족하는 index 갯수 체크
+void Add(char c);
+void Delete(char c);
+
+int main()
+{
+    int P; //부분 문자열 길이
+    int S; //전체 문자열 길이
+    string sDNA; //입력받는 DNA 문자열
+
+    int nResult = 0; // 최종 출력 값
+    
+    cin >> S >> P;
+    cin >> sDNA;
+    
+    for(int i=0; i<4; i++)
+    {
+        cin>>nCheckArr[i];
+        if(nCheckArr[i] == 0)
+            nCheckCount++; // 중요한 부분, 0일 땐 따질 필요가 없으므로.. 자동 만족
+    }
+    for(int i=0; i<4; i++)
+    {
+        nMyArr[i] = 0;
+    }
+    for (int i=0; i<P; i++)
+    {
+        Add(sDNA[i]); // 초기 입력받은 문자 처리
+    }
+    
+    nResult = (nCheckCount == 4) ? 1 : 0; // 초기 윈도우가 조건을 만족하는지 검사
+    
+    for(int i=P; i < S; i++)
+    {
+        int j = i-P; // 가장 뒷 단에 있는 index 삭제
+        Add(sDNA[i]); // 새로운 앞쪽 문자열 추가
+        Delete(sDNA[j]);
+        
+        if(nCheckCount == 4)
+            nResult ++;
+    }
+    cout << nResult << "\n" ;
+    
+    
+}
+void Add(char c)
+{
+    switch (c)
+    {
+        case 'A':
+            {
+                nMyArr[0]++; // A 추가 후 인덱스 count값 증가
+                if(nMyArr[0] == nCheckArr[0]) nCheckCount++; // 증가 후 MyCount와 비교 대상 Count와 같으면 체크 카운트 증가.
+            } break;
+        case 'C':
+            {
+                nMyArr[1]++;
+                if(nMyArr[1] == nCheckArr[1]) nCheckCount++;
+            } break;
+        case 'G':
+            {
+                nMyArr[2]++;
+                if(nMyArr[2] == nCheckArr[2]) nCheckCount++;
+            } break;
+        case 'T':
+            {
+                nMyArr[3]++;
+                if(nMyArr[3] == nCheckArr[3]) nCheckCount++;
+            } break;      
+    }
+}
+void Delete(char c)
+{
+    switch (c)
+    {
+        case 'A':
+            {
+                
+                if(nMyArr[0] == nCheckArr[0]) nCheckCount--;
+                nMyArr[0]--;
+            }break; 
+        case 'C':
+            {
+                
+                if(nMyArr[1] == nCheckArr[1]) nCheckCount--;
+                nMyArr[1]--;
+            }break; 
+        case 'G':
+            {
+                
+                if(nMyArr[2] == nCheckArr[2]) nCheckCount--;
+                nMyArr[2]--;
+            }break; 
+        case 'T':
+            {
+                
+                if(nMyArr[3] == nCheckArr[3]) nCheckCount--;
+                nMyArr[3]--;
+            }break;             
+    }
+} 
